@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#backup configuration file - sourced shell script
+
+###############################################################################
+# Where and When
+###############################################################################
+
+#Name of the host in which the backup is occurring
+host=`hostname`
+
+#Get date and time of commencement of backup (used for the directory name where the backup will be located)
+#e.g. 2016-05-21-20:10
+datetime=`date +%Y-%m-%d-%H:%M`
+
+###############################################################################
+# Source Information
+###############################################################################
+
+#Storage device partition tables to be backed up
+backupsrcdevs[/dev/sda]='sda'
+
+#Volumes/Partitions to backup
+#e.g. backup LV /dev/centos/root -> /dest/path/root.dump
+srcvols[/dev/centos/root]='root'
+#e.g. backup partition /dev/sda1 -> /dest/path/boot.dump
+srcvols[/dev/sda1]='boot'
+
+###############################################################################
+# Backup Preparations Information
+###############################################################################
+
+#Snapshot volumes with given size
+snapsrcvols[/dev/centos/root]='2G'
+
+#Unmount src volumes before backup
+umountsrcvols[/dev/sda1]=1 #Set to any value
+
+#List of systemd services to stop before any snapshots and start after
+#stopservices=(postgresql mariadb)
+
+#Specify rotate-backups command line options (or don't set if not installed)
+rotatebackupsargs="-n -w 2 -m 2 -y 2" #dry-run only (no delete), 2weeklys, 2monthlys, 2yearlys
+
+###############################################################################
+# Destination Information
+###############################################################################
+
+#Destination device to backup to
+backupdstdev="/dev/disk/by-label/osbackup"
+
+#Mount point for the backupdstdev (where the destination filesystem is mounted)
+backupmp="/mnt/osbackup"
+
+#Directory relative to backupmp mount point for this backup to be stored
+backupdir="os"
+
+#Full path to the backup directory for this backup
+backupdest="$backupmp/$backupdir"
+
+#Suffix to snapshot volume names
+snapshotsuffix='_bak'
+
+
