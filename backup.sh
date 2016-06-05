@@ -83,6 +83,10 @@ echo "Output from script written to $backupdest/$datetime/backup.txt"
 	do
 		echo "Copying output of parted $vol unit s print"
 		/usr/sbin/parted "$vol" unit s print >"$working/config/${backupsrcdevs[$vol]}.parted.txt"
+		for avol in `ls /dev/disk/by-path/*|grep -v 'part[0-9]\+$'`
+		do
+			/usr/sbin/parted "$avol" unit s print >>"$working/config/all.parted.txt"
+		done
 		#echo "Copying output of fdisk -l for device - $vol"
 		#/sbin/fdisk -l "$vol" >"$working/config/${backupsrcdevs[$vol]}.fdisk.txt"
 		#echo 'Copy MBR from device $vol - dd count=1 bs=512'
