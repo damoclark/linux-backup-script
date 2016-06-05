@@ -58,7 +58,7 @@ backupdir="os"
 #Full path to the backup directory for this backup
 backupdest="$backupmp/$backupdir"
 
-#Suffix to snapshot volume names
+#Suffix to snapshot volume names '_bak' if not specified
 snapshotsuffix='_bak'
 
 
