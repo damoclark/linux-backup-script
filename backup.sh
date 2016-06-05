@@ -95,12 +95,9 @@ echo "Output from script written to $backupdest/$datetime/backup.txt"
 		#/sbin/sfdisk -d "$vol" >"$working/config/${backupsrcdevs}.sfdisk.txt"
 	done
 	
-	echo "Copying /dev/disk symlinks"
-	cp -f -r -u -P /dev/disk "$working/config/"
-	
 	#Backup /etc config structure
-	echo "Backup /etc to $backupdest/$datetime/etc"
-	cp -f -r -p -P /etc "$working/"
+	echo "Backup /etc to $backupdest/$datetime/etc.tar"
+	tar cf "$working/etc.tar" -C / etc
 	
 	#Stop services
 	test -n "${stopservices[*]}" && \
