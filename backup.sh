@@ -163,3 +163,5 @@ echo "Output from script written to $backupdest/$datetime/backup.txt"
 	echo "Backup complete"
 	date
 } >"$working/backup.txt" 2>&1
+
+cat "$backupdest/$datetime/backup.txt"
