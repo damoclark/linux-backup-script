@@ -33,13 +33,16 @@ echo "============== Preparing backup on $host - $datetime =============="
 
 #Make sure destination device is mounted
 echo "Mounting backup destination device if not already"
-mount|grep -q "$backupmp" || mount "$backupdstdev" "$backupmp"
-
-#Check if mount succeeded
-if [ $? -ne 0 ]
+if test -n "$backupmp"
 then
-  echo "Mounting backup device failed!"
-  exit 1
+  mount|grep -q "$backupmp" || mount "$backupdstdev" "$backupmp"
+
+  #Check if mount succeeded
+  if [ $? -ne 0 ]
+  then
+    echo "Mounting backup device failed!"
+    exit 1
+  fi
 fi
 
 export PATH=/sbin:/usr/sbin:$PATH
